@@ -1,4 +1,4 @@
-# 🎙️ VOICE.AI — Local Voice & RAG Customer Support Agent
+# VOICE.AI — Local Voice & RAG Customer Support Agent
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11-blue?logo=python&logoColor=white" alt="Python Version" />
@@ -18,33 +18,33 @@
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Architecture & Workflow](#-architecture--workflow)
-- [Tech Stack](#-tech-stack)
-- [System Requirements](#-system-requirements)
-- [Quick Start Guide](#-quick-start-guide)
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Architecture & Workflow](#architecture--workflow)
+- [Tech Stack](#tech-stack)
+- [System Requirements](#system-requirements)
+- [Quick Start Guide](#quick-start-guide)
   - [1. Prerequisites](#1-prerequisites)
   - [2. Clone & Setup Environment](#2-clone--setup-environment)
   - [3. Install Dependencies](#3-install-dependencies)
   - [4. Download the GGUF Model](#4-download-the-gguf-model)
   - [5. Ingest Documentation (PDF RAG)](#5-ingest-documentation-pdf-rag)
-- [Running the Application](#-running-the-application)
+- [Running the Application](#running-the-application)
   - [Option A: Full-Stack Web App (FastAPI + Streamlit)](#option-a-full-stack-web-app-fastapi--streamlit)
   - [Option B: Interactive CLI Mode](#option-b-interactive-cli-mode)
-- [API Reference](#-api-reference)
-- [Project Structure](#-project-structure)
-- [Configuration & Customization](#-configuration--customization)
-- [Troubleshooting & FAQs](#-troubleshooting--faqs)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [API Reference](#api-reference)
+- [Project Structure](#project-structure)
+- [Configuration & Customization](#configuration--customization)
+- [Troubleshooting & FAQs](#troubleshooting--faqs)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## 💡 Overview
+## Overview
 
 Modern customer support requires fast, accurate, and multi-modal assistance. However, relying on cloud-based LLM APIs often introduces severe privacy risks, data compliance hurdles, high token costs, and vendor lock-in.
 
@@ -56,29 +56,29 @@ Modern customer support requires fast, accurate, and multi-modal assistance. How
 
 ---
 
-## ✨ Key Features
+## Key Features
 
 | Feature | Description |
 | :--- | :--- |
-| 🧠 **Local LLM Reasoning** | Powered by **Mistral-7B-Instruct** (or any GGUF model) loaded via `llama-cpp-python` with low memory overhead. |
-| 🔍 **Document RAG Indexing** | Ingests PDF manuals, guides, and documentation using `pdfminer.six` and `all-MiniLM-L6-v2` embeddings stored in **FAISS**. |
-| ⚡ **Instant FAQ Lookup** | Keyword-accelerated FAQ matching (`data/faqs.json`) for instant sub-millisecond replies to standard inquiries. |
-| 🎙️ **Offline Speech-to-Text (STT)** | Converts spoken audio files into clean text using OpenAI's **Whisper** (`tiny` model for lightweight speed). |
-| 🔊 **Neural Text-to-Speech (TTS)** | Synthesizes realistic, natural-sounding voice responses with **Coqui TTS** (`tacotron2-DDC`). |
-| 🖥️ **Interactive Streamlit UI** | Beautiful web interface supporting text messaging, audio file uploads, and integrated audio playback. |
-| 🌐 **FastAPI Backend & WebSockets** | Robust REST API endpoints and real-time bidirectional WebSocket streaming for external CRM or mobile integration. |
-| 💾 **Session History Persistence** | Automatic serialization of active chat threads into `data/chat_sessions.json` for auditing and compliance. |
+| **Local LLM Reasoning** | Powered by **Mistral-7B-Instruct** (or any GGUF model) loaded via `llama-cpp-python` with low memory overhead. |
+| **Document RAG Indexing** | Ingests PDF manuals, guides, and documentation using `pdfminer.six` and `all-MiniLM-L6-v2` embeddings stored in **FAISS**. |
+| **Instant FAQ Lookup** | Keyword-accelerated FAQ matching (`data/faqs.json`) for instant sub-millisecond replies to standard inquiries. |
+| **Offline Speech-to-Text (STT)** | Converts spoken audio files into clean text using OpenAI's **Whisper** (`tiny` model for lightweight speed). |
+| **Neural Text-to-Speech (TTS)** | Synthesizes realistic, natural-sounding voice responses with **Coqui TTS** (`tacotron2-DDC`). |
+| **Interactive Streamlit UI** | Clean web interface supporting text messaging, audio file uploads, and integrated audio playback. |
+| **FastAPI Backend & WebSockets** | Robust REST API endpoints and real-time bidirectional WebSocket streaming for external CRM or mobile integration. |
+| **Session History Persistence** | Automatic serialization of active chat threads into `data/chat_sessions.json` for auditing and compliance. |
 
 ---
 
-## 🏗️ Architecture & Workflow
+## Architecture & Workflow
 
 ```mermaid
 flowchart TD
     subgraph Client ["Client Layer"]
-        UI["🖥️ Streamlit Web UI (ui/app.py)"]
-        CLI["💻 Interactive CLI (main.py)"]
-        EXT["📱 External Client / CRM via WebSocket / REST"]
+        UI["Streamlit Web UI (ui/app.py)"]
+        CLI["Interactive CLI (main.py)"]
+        EXT["External Client / CRM via WebSocket / REST"]
     end
 
     subgraph API ["API Layer (api/main.py)"]
@@ -89,25 +89,25 @@ flowchart TD
     end
 
     subgraph Speech ["Voice Processing"]
-        STT["🎙️ Whisper STT (tools/stt_whisper.py)"]
-        TTS["🔊 Coqui TTS (tools/tts_coqui.py)"]
+        STT["Whisper STT (tools/stt_whisper.py)"]
+        TTS["Coqui TTS (tools/tts_coqui.py)"]
     end
 
     subgraph Intelligence ["Core Intelligence (core/agent.py)"]
         Agent["SupportAgent"]
-        Memory[("💭 Multi-Turn Session Memory")]
+        Memory[("Multi-Turn Session Memory")]
         PromptEngine["Prompt Construction Engine"]
     end
 
     subgraph RAG ["Retrieval-Augmented Generation (core/rag.py)"]
-        PDFs["📄 Product Manuals & PDFs (data/docs/)"]
+        PDFs["Product Manuals & PDFs (data/docs/)"]
         Extractor["PDF Text Extractor & Chunker"]
         Embedder["SentenceTransformer (all-MiniLM-L6-v2)"]
-        VectorDB[("⚡ FAISS Vector Index (data/docs.index)")]
+        VectorDB[("FAISS Vector Index (data/docs.index)")]
     end
 
     subgraph Engine ["Local Inference (core/llm_loader.py)"]
-        LLM["🧠 Mistral-7B-Instruct (GGUF via llama-cpp-python)"]
+        LLM["Mistral-7B-Instruct (GGUF via llama-cpp-python)"]
     end
 
     UI -->|"Audio Upload (.wav / .mp3)"| EP3
@@ -137,7 +137,7 @@ flowchart TD
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Layer | Component | Implementation |
 | :--- | :--- | :--- |
@@ -153,7 +153,7 @@ flowchart TD
 
 ---
 
-## 💻 System Requirements
+## System Requirements
 
 - **Operating System**: Windows 10/11, macOS (Apple Silicon / Intel), or Linux (Ubuntu 20.04+)
 - **Python**: 3.9, 3.10, or 3.11
@@ -163,11 +163,11 @@ flowchart TD
 
 ---
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### 1. Prerequisites
 
-Make sure you have **Python 3.9+** and **FFmpeg** installed:
+Ensure you have **Python 3.9+** and **FFmpeg** installed:
 
 #### Windows (via winget or chocolatey):
 ```powershell
@@ -272,7 +272,7 @@ python -c "from core.rag import DocStore; ds = DocStore(); ds.index_all(); print
 
 ---
 
-## 🏃 Running the Application
+## Running the Application
 
 ### Option A: Full-Stack Web App (FastAPI + Streamlit)
 
@@ -308,7 +308,7 @@ Agent: Based on the hardware troubleshooting manual, check if the LED indicator 
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 The FastAPI service exposes RESTful and WebSocket endpoints for seamless integration:
 
@@ -395,7 +395,7 @@ Establishes a bi-directional streaming WebSocket connection for real-time text c
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 VOICE.AI/
@@ -427,7 +427,7 @@ VOICE.AI/
 
 ---
 
-## ⚙️ Configuration & Customization
+## Configuration & Customization
 
 ### Modifying LLM Settings
 In [`core/llm_loader.py`](core/llm_loader.py), you can customize:
@@ -462,7 +462,7 @@ Edit [`data/faqs.json`](data/faqs.json) to add custom question-answer pairs with
 
 ---
 
-## ❓ Troubleshooting & FAQs
+## Troubleshooting & FAQs
 
 <details>
 <summary><strong>1. <code>llama-cpp-python</code> fails to install or compile</strong></summary>
@@ -500,7 +500,7 @@ Verify that `http://localhost:8000/docs` is reachable before launching Streamlit
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [ ] **Live Audio Streaming**: Native WebSocket microphone streaming for instantaneous voice interaction.
 - [ ] **Multi-Lingual Support**: Whisper multilingual translation and multilingual embedding models.
@@ -510,9 +510,9 @@ Verify that `http://localhost:8000/docs` is reachable before launching Streamlit
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! If you'd like to improve VOICE.AI:
+Contributions are welcome. If you would like to improve VOICE.AI:
 
 1. **Fork** the repository.
 2. Create your feature branch (`git checkout -b feature/amazing-feature`).
@@ -522,12 +522,12 @@ Contributions are welcome! If you'd like to improve VOICE.AI:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <p align="center">
-  Made with ❤️ by <a href="https://github.com/VaishnavSreekumar">Vaishnav Sreekumar</a>
+  Maintained by <a href="https://github.com/VaishnavSreekumar">Vaishnav Sreekumar</a>
 </p>
